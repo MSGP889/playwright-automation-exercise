@@ -26,8 +26,18 @@ test.describe("products Page", () => {
         await expect(page.locator('.product-information h2')).toHaveText(firstName!);
     });
 
-    test.only('sidebar shows Category and Brands sections', async ({ productsPage }) => {
+    test('sidebar shows Category and Brands sections', async ({ productsPage }) => {
         await expect(productsPage.categoryHeading).toBeVisible();
         await expect(productsPage.brandsHeading).toBeVisible();
+    });
+
+    test.only("Search for Product", async ({ productsPage }) => {
+        await productsPage.searchBox.fill("Top");
+        await productsPage.searchBtn.click();
+        await expect(productsPage.searchedHeading).toBeVisible();
+        const titles = await productsPage.productTitles.allTextContents();
+        expect(titles).toContain('Fancy Green Top');
+        expect(titles.length).toBe(14);
+
     });
 })
