@@ -31,7 +31,7 @@ test.describe("products Page", () => {
         await expect(productsPage.brandsHeading).toBeVisible();
     });
 
-    test.only("Search for Product", async ({ productsPage }) => {
+    test("Search for Product", async ({ productsPage }) => {
         await productsPage.searchBox.fill("Top");
         await productsPage.searchBtn.click();
         await expect(productsPage.searchedHeading).toBeVisible();
