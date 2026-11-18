@@ -36,4 +36,12 @@ test.describe("products Page", () => {
         await expect(productsPage.productTitles.filter({ hasText: 'Fancy Green Top' })).toBeVisible();
 
     });
+
+    test('filtering by Women > Dress shows only Women Dress products', async ({ productsPage, page }) => {
+        await productsPage.categoryWomenBtn.click();
+        await productsPage.categoryDressesBtn.click();
+        await expect(page).toHaveURL(/category_products\/1/);
+        await expect(productsPage.categoryPageHeading).toHaveText('Women - Dress Products');
+        await expect(productsPage.productCards).toHaveCount(3);
+    });
 })
