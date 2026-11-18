@@ -38,10 +38,16 @@ test.describe("products Page", () => {
     });
 
     test('filtering by Women > Dress shows only Women Dress products', async ({ productsPage, page }) => {
-        await productsPage.categoryWomenBtn.click();
-        await productsPage.categoryDressesBtn.click();
+        await productsPage.filterByCategory('Women', 'Dress');
         await expect(page).toHaveURL(/category_products\/1/);
         await expect(productsPage.categoryPageHeading).toHaveText('Women - Dress Products');
         await expect(productsPage.productCards).toHaveCount(3);
+    });
+
+    test('filtering by Men > Tshirts shows only Men Tshirts products', async ({ productsPage, page }) => {
+        await productsPage.filterByCategory('Men', 'Tshirts');
+        await expect(page).toHaveURL(/category_products\/3/);
+        await expect(productsPage.categoryPageHeading).toHaveText('Men - Tshirts Products');
+        await expect(productsPage.productCards).toHaveCount(6);
     });
 })

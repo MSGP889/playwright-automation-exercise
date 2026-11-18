@@ -1,4 +1,4 @@
-import { Page, Locator } from '@playwright/test';
+import { Page, Locator, expect } from '@playwright/test';
 
 export class ProductsPage {
     readonly page: Page;
@@ -13,8 +13,6 @@ export class ProductsPage {
     readonly searchBtn: Locator;
     readonly searchedHeading: Locator;
     readonly productTitles: Locator;
-    readonly categoryWomenBtn: Locator;
-    readonly categoryDressesBtn: Locator;
     readonly categoryPageHeading: Locator;
 
     constructor(page: Page) {
@@ -30,9 +28,7 @@ export class ProductsPage {
         this.searchBtn = page.locator('#submit_search.btn-default');
         this.searchedHeading = page.getByRole('heading', { name: 'Searched Products' });
         this.productTitles = page.locator('.productinfo.text-center>p');
-        this.categoryWomenBtn = page.locator('.category-products a[href="#Women"] .badge');
-        this.categoryDressesBtn = page.locator('#Women').getByRole('link', { name: 'Dress' });
-        this.categoryPageHeading = page.getByRole('heading', { name: 'Women - Dress Products' });
+        this.categoryPageHeading = page.locator('.features_items > h2.title');
     }
 
     async navigateToProductsPage() {
@@ -43,6 +39,9 @@ export class ProductsPage {
         await this.productCards.nth(index).getByRole('link', { name: 'View Product' }).click();
     }
 
-
+    async filterByCategory(parent: string, sub: string) {
+        await this.page.locator(`.category-products a[href="#${parent}"] .badge`).click();
+        await this.page.locator(`#${parent}`).getByRole('link', { name: sub }).click();
+    }
 
 }
