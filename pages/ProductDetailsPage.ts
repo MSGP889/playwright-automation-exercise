@@ -1,6 +1,6 @@
 import {Page,Locator} from '@playwright/test';
 
-export class productDetailsPage
+export class ProductDetailsPage
 {
     readonly page: Page;
     readonly productName :Locator;
