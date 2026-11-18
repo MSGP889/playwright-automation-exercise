@@ -55,17 +55,23 @@ test.describe("products Page", () => {
         });
     }
 
-    test('filtering by Brands > Polo shows only Polo products', async ({ productsPage, page }) => {
-        await productsPage.filterByBrand('Polo');
-        await expect(page).toHaveURL(/brand_products\/Polo/);
-        await expect(productsPage.categoryPageHeading).toHaveText('Brand - Polo Products');
-        await expect(productsPage.productCards).toHaveCount(6);
-    });
+    const brandCases = [
+        { brand: 'Polo', expectedCount: 6 },
+        { brand: 'H&M', expectedCount: 5 },
+        { brand: 'Madame', expectedCount: 5 },
+        { brand: 'Mast & Harbour', expectedCount: 3 },
+        { brand: 'Babyhug', expectedCount: 4 },
+        { brand: 'Allen Solly Junior', expectedCount: 3 },
+        { brand: 'Kookie Kids', expectedCount: 3 },
+        { brand: 'Biba', expectedCount: 5 },
+    ];
 
-    test('filtering by Brands > H&M shows only H&M products', async ({ productsPage, page }) => {
-        await productsPage.filterByBrand('H&M');
-        await expect(page).toHaveURL(/brand_products\/H&M/);
-        await expect(productsPage.categoryPageHeading).toHaveText('Brand - H&M Products');
-        await expect(productsPage.productCards).toHaveCount(5);
-    });
-})
+    for (const { brand, expectedCount } of brandCases) {
+        test(`filtering by brand ${brand} shows only ${brand} products`, async ({ productsPage, page }) => {
+            await productsPage.filterByBrand(brand);
+            await expect(page).toHaveURL(new RegExp(`brand_products/${brand.replace(/ /g, '%20')}`));
+            await expect(productsPage.categoryPageHeading).toHaveText(`Brand - ${brand} Products`);
+            await expect(productsPage.productCards).toHaveCount(expectedCount);
+        });
+    }
+});
