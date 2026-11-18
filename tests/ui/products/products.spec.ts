@@ -36,4 +36,42 @@ test.describe("products Page", () => {
         await expect(productsPage.productTitles.filter({ hasText: 'Fancy Green Top' })).toBeVisible();
 
     });
-})
+
+    const categoryCases = [
+        { parent: 'Women', sub: 'Dress', url: /category_products\/1/, expectedCount: 3 },
+        { parent: 'Women', sub: 'Tops', url: /category_products\/2/, expectedCount: 6 },
+        { parent: 'Women', sub: 'Saree', url: /category_products\/7/, expectedCount: 3 },
+        { parent: 'Men', sub: 'Tshirts', url: /category_products\/3/, expectedCount: 6 },
+        { parent: 'Men', sub: 'Jeans', url: /category_products\/6/, expectedCount: 3 },
+        { parent: 'Kids', sub: 'Dress', url: /category_products\/4/, expectedCount: 6 },
+        { parent: 'Kids', sub: 'Tops & Shirts', url: /category_products\/5/, expectedCount: 7 },
+    ];
+    for (const { parent, sub, url, expectedCount } of categoryCases) {
+        test(`filtering by ${parent} > ${sub} shows only ${parent} ${sub} products`, async ({ productsPage, page }) => {
+            await productsPage.filterByCategory(parent, sub);
+            await expect(page).toHaveURL(url);
+            await expect(productsPage.categoryPageHeading).toHaveText(`${parent} - ${sub} Products`);
+            await expect(productsPage.productCards).toHaveCount(expectedCount);
+        });
+    }
+
+    const brandCases = [
+        { brand: 'Polo', expectedCount: 6 },
+        { brand: 'H&M', expectedCount: 5 },
+        { brand: 'Madame', expectedCount: 5 },
+        { brand: 'Mast & Harbour', expectedCount: 3 },
+        { brand: 'Babyhug', expectedCount: 4 },
+        { brand: 'Allen Solly Junior', expectedCount: 3 },
+        { brand: 'Kookie Kids', expectedCount: 3 },
+        { brand: 'Biba', expectedCount: 5 },
+    ];
+
+    for (const { brand, expectedCount } of brandCases) {
+        test(`filtering by brand ${brand} shows only ${brand} products`, async ({ productsPage, page }) => {
+            await productsPage.filterByBrand(brand);
+            await expect(page).toHaveURL(new RegExp(`brand_products/${brand.replace(/ /g, '%20')}`));
+            await expect(productsPage.categoryPageHeading).toHaveText(`Brand - ${brand} Products`);
+            await expect(productsPage.productCards).toHaveCount(expectedCount);
+        });
+    }
+});
