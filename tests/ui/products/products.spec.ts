@@ -1,6 +1,4 @@
 import { test, expect } from '@fixtures/base';
-import { ProductsPage } from '@pages/ProductsPage';
-
 
 test.describe("products Page", () => {
 
@@ -18,16 +16,24 @@ test.describe("products Page", () => {
         await expect(productsPage.productPrice).toHaveCount(34);
     });
 
-    test('View Product opens the product detail page', async ({ productsPage, page }) => {
-        await productsPage.navigateToProductsPage();
+    test('View Product opens the product detail page', async ({ productsPage, page, productDetailsPage }) => {
         const firstName = await productsPage.productName.first().textContent();
         await productsPage.openProductDetails(0);
         await expect(page).toHaveURL(/product_details/);
-        await expect(page.locator('.product-information h2')).toHaveText(firstName!);
+        await expect(productDetailsPage.productName).toHaveText(firstName!);
     });
 
-    test.only('sidebar shows Category and Brands sections', async ({ productsPage }) => {
+    test('sidebar shows Category and Brands sections', async ({ productsPage }) => {
         await expect(productsPage.categoryHeading).toBeVisible();
         await expect(productsPage.brandsHeading).toBeVisible();
+    });
+
+    test("Search for Product", async ({ productsPage }) => {
+        await productsPage.searchBox.fill("Top");
+        await productsPage.searchBtn.click();
+        await expect(productsPage.searchedHeading).toBeVisible();
+        await expect(productsPage.productTitles).toHaveCount(14);
+        await expect(productsPage.productTitles.filter({ hasText: 'Fancy Green Top' })).toBeVisible();
+
     });
 })
