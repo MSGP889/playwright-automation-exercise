@@ -44,4 +44,8 @@ export class ProductsPage {
         await this.page.locator(`#${parent}`).getByRole('link', { name: sub }).click();
     }
 
+    async filterByBrand(brand: string) {
+        await this.page.getByRole('link', { name: brand }).click();
+    }
+
 }

@@ -50,4 +50,11 @@ test.describe("products Page", () => {
         await expect(productsPage.categoryPageHeading).toHaveText('Men - Tshirts Products');
         await expect(productsPage.productCards).toHaveCount(6);
     });
+
+    test('filtering by Brands > Polo shows only Polo products', async ({ productsPage, page }) => {
+        await productsPage.filterByBrand('Polo');
+        await expect(page).toHaveURL(/brand_products\/Polo/);
+        await expect(productsPage.categoryPageHeading).toHaveText('Brand - Polo Products');
+        await expect(productsPage.productCards).toHaveCount(6);
+    });
 })
