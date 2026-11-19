@@ -9,6 +9,7 @@ export class LoginPage {
     readonly loginEmailInput: Locator;
     readonly loginPasswordInput: Locator;
     readonly loginButton: Locator;
+    readonly errorMessage: Locator;
 
     constructor(page: Page) {
         this.page = page;
@@ -19,6 +20,7 @@ export class LoginPage {
         this.loginEmailInput = page.getByRole('textbox', { name: 'Email Address' }).first();
         this.loginPasswordInput = page.getByPlaceholder('Password');
         this.loginButton = page.getByRole('button', { name: 'Login' });
+        this.errorMessage = page.getByText('Your email or password is incorrect!');
     }
 
     async startSignup(name: string, email: string) {

@@ -2,7 +2,9 @@ import { test, expect } from '@fixtures/base';
 import { buildUser } from '@utils/userData';
 
 test.describe('Signup', () => {
+
     test('new user can register, is logged in, and can delete the account', async ({ homePage, loginPage, signupPage, page }) => {
+
         const user = buildUser();
 
         await homePage.navigateToHomePage();
@@ -24,6 +26,7 @@ test.describe('Signup', () => {
     });
 
     test('signup with existing email shows error message', async ({ homePage, loginPage, signupPage, page, request }) => {
+
         const user = buildUser();
 
         try {
@@ -39,7 +42,7 @@ test.describe('Signup', () => {
             await loginPage.startSignup(user.name, user.email);
             await expect(signupPage.emailExistsMessage).toHaveText('Email Address already exist!');
         }
-        
+
         finally {
             await request.delete('/api/deleteAccount', { form: { email: user.email, password: user.password } });
         }
