@@ -8,6 +8,7 @@ export class HomePage {
     readonly signupLoginLink: Locator;
     readonly loggedInAs: Locator;
     readonly deleteAccountLink: Locator;
+    readonly logoutLink: Locator;
 
     constructor(page: Page) {
         this.page = page;
@@ -16,6 +17,7 @@ export class HomePage {
         this.signupLoginLink = this.headerLinks.getByRole('link', { name: 'Signup / Login' });
         this.loggedInAs = page.getByText('Logged in as QA User');
         this.deleteAccountLink = this.headerLinks.getByRole('link', { name: 'Delete Account' });
+        this.logoutLink = this.headerLinks.getByRole('link', { name: 'Logout' });
     }
 
     async navigateToHomePage() {

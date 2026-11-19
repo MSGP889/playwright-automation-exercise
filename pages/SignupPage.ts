@@ -8,6 +8,7 @@ export class SignupPage {
     readonly accountCreatedMessage: Locator;
     readonly continueButton: Locator;
     readonly accountDeletedHeading: Locator;
+    readonly emailExistsMessage: Locator;
 
     constructor(page: Page) {
         this.page = page;
@@ -16,6 +17,7 @@ export class SignupPage {
         this.accountCreatedMessage = page.getByText('Account Created!');
         this.continueButton = page.getByRole('link', { name: 'Continue' });
         this.accountDeletedHeading = page.getByText('Account Deleted!');
+        this.emailExistsMessage = page.getByText('Email Address already exist!');
     }
 
     async fillAccountDetails(user: UserData) {
@@ -34,4 +36,6 @@ export class SignupPage {
         await this.page.locator('[data-qa="zipcode"]').fill(user.zipcode);
         await this.page.locator('[data-qa="mobile_number"]').fill(user.mobile);
     }
+
+
 }

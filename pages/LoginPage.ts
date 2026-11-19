@@ -20,4 +20,5 @@ export class LoginPage {
         await this.emailInput.fill(email);
         await this.signupButton.click();
     }
+
 }
