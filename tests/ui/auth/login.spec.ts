@@ -36,4 +36,24 @@ test.describe('Login', () => {
             await deleteUserViaApi(request, user);
         }
     });
+
+    test('a logged-in user can log out', async ({ homePage, loginPage, page, request }) => {
+
+        const user = buildUser();
+        await createUserViaApi(request, user);
+
+        try {
+            await homePage.navigateToHomePage();
+            await homePage.signupLoginLink.click();
+            await expect(page).toHaveURL(/login/);
+            await loginPage.login(user.email, user.password);
+            await expect(homePage.loggedInAs).toHaveText(`Logged in as ${user.name}`);
+            await homePage.logoutLink.click();
+            await expect(page).toHaveURL(/login/);
+            await expect(loginPage.signupHeading).toHaveText('New User Signup!');
+            await expect(homePage.loggedInAs).not.toBeVisible();
+        } finally {
+            await deleteUserViaApi(request, user);
+        }
+    });
 });
