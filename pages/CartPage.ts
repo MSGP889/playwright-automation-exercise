@@ -9,6 +9,10 @@ export class CartPage {
     readonly total: Locator;
     readonly removeFromCartButton: Locator;
     readonly emptyCartMessage: Locator;
+    readonly checkoutButton: Locator;
+    readonly checkoutModal: Locator;
+    readonly checkoutModalMessage: Locator;
+    readonly registerLoginLink: Locator;
 
     constructor(page: Page) {
         this.page = page;
@@ -19,6 +23,10 @@ export class CartPage {
         this.total = this.rows.first().locator('.cart_total_price');
         this.removeFromCartButton = page.locator('.cart_quantity_delete');
         this.emptyCartMessage = page.getByText('Cart is empty!');
+        this.checkoutButton = page.getByText('Proceed To Checkout');
+        this.checkoutModal = page.locator('#checkoutModal');
+        this.checkoutModalMessage = this.checkoutModal.getByText('Register / Login account to proceed on checkout.');
+        this.registerLoginLink = this.checkoutModal.getByRole('link', { name: 'Register / Login' });
     }
 
     nameOf(i: number) { return this.rows.nth(i).locator('.cart_description h4 a'); }

@@ -59,7 +59,7 @@ test.describe('Cart', () => {
         await expect(cartPage.emptyCartMessage).toBeVisible();
     });
 
-    test.only('product quantity set on the detail page shows in the cart with the right total', async ({ productsPage, productDetailsPage, cartPage, page }) => {
+    test('product quantity set on the detail page shows in the cart with the right total', async ({ productsPage, productDetailsPage, cartPage, page }) => {
         await productsPage.openProductDetails(0);
 
         const name = (await productDetailsPage.productName.textContent())?.trim() ?? '';
@@ -75,5 +75,17 @@ test.describe('Cart', () => {
         await expect(cartPage.nameOf(0)).toHaveText(name);
         await expect(cartPage.quantityOf(0)).toHaveText('4');
         await expect(cartPage.totalOf(0)).toHaveText(`Rs. ${unitPrice * 4}`);
+    });
+
+    test.only('user directs to login when trying to checkout without being logged in', async ({ productsPage, page, cartPage, loginPage }) => {
+        await productsPage.productCards.first().hover();
+        await productsPage.addToCartButton.first().click();
+        await productsPage.viewCartLink.click();
+        await expect(page).toHaveURL(/view_cart/);
+        await cartPage.checkoutButton.click();
+        await expect(cartPage.checkoutModalMessage).toBeVisible();
+        await cartPage.registerLoginLink.click();
+        await expect(page).toHaveURL(/login/);
+        await expect(loginPage.signupHeading).toBeVisible();
     });
 });
