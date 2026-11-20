@@ -1,4 +1,5 @@
 import { test, expect } from '@fixtures/base';
+import { ProductsPage } from '@pages/ProductsPage';
 
 test.describe("products Page", () => {
 

@@ -1,4 +1,5 @@
 import { test, expect } from '@fixtures/base';
+import { HomePage } from '@pages/HomePage';
 
 test.describe('Home page', () => {
     test.beforeEach(async ({ homePage }) => {
@@ -34,7 +35,6 @@ test.describe('Home page', () => {
     }
 
     test('visitor can subscribe to the newsletter from the footer', async ({ homePage }) => {
-        await homePage.navigateToHomePage();
         await expect(homePage.footer.heading).toBeVisible();
 
         await homePage.footer.subscribe('qa.subscriber@example.com');
@@ -42,4 +42,12 @@ test.describe('Home page', () => {
         await expect(homePage.footer.successMessage).toBeVisible();
     });
 
+    test('recommended item can be added to the cart', async ({ homePage, productsPage, cartPage }) => {
+        await expect(homePage.recommendedHeading).toBeVisible();
+
+        await homePage.recommendedAddToCartButton.click();
+        await productsPage.viewCartLink.click();
+
+        await expect(cartPage.rows).toHaveCount(1);
+    });
 });
