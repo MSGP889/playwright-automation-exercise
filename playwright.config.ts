@@ -30,6 +30,7 @@ export default defineConfig({
     {
       name: 'setup',
       testMatch: /.*\.setup\.ts/,
+      teardown: 'cleanup',
       use: { ...devices['Desktop Chrome'] },
     },
     {
@@ -45,6 +46,11 @@ export default defineConfig({
         ...devices['Desktop Chrome'],
         storageState: 'playwright/.auth/user.json',
       },
+    },
+    {
+      name: 'cleanup',
+      testMatch: /.*\.teardown\.ts/,
+      use: { ...devices['Desktop Chrome'] },
     },
   ],
 });
