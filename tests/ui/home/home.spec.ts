@@ -32,4 +32,14 @@ test.describe('Home page', () => {
             await expect(page.getByRole('heading', { name: heading })).toBeVisible();
         });
     }
+
+    test('visitor can subscribe to the newsletter from the footer', async ({ homePage }) => {
+        await homePage.navigateToHomePage();
+        await expect(homePage.footer.heading).toBeVisible();
+
+        await homePage.footer.subscribe('qa.subscriber@example.com');
+
+        await expect(homePage.footer.successMessage).toBeVisible();
+    });
+
 });

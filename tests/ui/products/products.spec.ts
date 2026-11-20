@@ -74,4 +74,14 @@ test.describe("products Page", () => {
             await expect(productsPage.productCards).toHaveCount(expectedCount);
         });
     }
+
+    test('visitor can submit a review on the product detail page', async ({ productsPage, productDetailsPage }) => {
+        await productsPage.openProductDetails(0);
+        await expect(productDetailsPage.reviewHeading).toBeVisible();
+
+        await productDetailsPage.submitReview('QA Tester', 'qa.tester@example.com', 'Good quality product.');
+
+        await expect(productDetailsPage.reviewSuccessMessage).toBeVisible();
+    });
+
 });

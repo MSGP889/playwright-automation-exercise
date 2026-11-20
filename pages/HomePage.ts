@@ -1,4 +1,5 @@
 import { Page, Locator } from '@playwright/test';
+import { FooterComponent } from './components/FooterComponent';
 
 export class HomePage {
 
@@ -9,6 +10,7 @@ export class HomePage {
     readonly loggedInAs: Locator;
     readonly deleteAccountLink: Locator;
     readonly logoutLink: Locator;
+    readonly footer: FooterComponent;
 
     constructor(page: Page) {
         this.page = page;
@@ -18,6 +20,7 @@ export class HomePage {
         this.loggedInAs = page.getByText('Logged in as');
         this.deleteAccountLink = this.headerLinks.getByRole('link', { name: 'Delete Account' });
         this.logoutLink = this.headerLinks.getByRole('link', { name: 'Logout' });
+        this.footer = new FooterComponent(page);
     }
 
     async navigateToHomePage() {
