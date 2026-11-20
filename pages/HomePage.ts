@@ -11,6 +11,7 @@ export class HomePage {
     readonly deleteAccountLink: Locator;
     readonly logoutLink: Locator;
     readonly footer: FooterComponent;
+    readonly contactUsBtn: Locator;
 
     constructor(page: Page) {
         this.page = page;
@@ -21,6 +22,7 @@ export class HomePage {
         this.deleteAccountLink = this.headerLinks.getByRole('link', { name: 'Delete Account' });
         this.logoutLink = this.headerLinks.getByRole('link', { name: 'Logout' });
         this.footer = new FooterComponent(page);
+        this.contactUsBtn = page.getByRole('link', { name: 'Contact us' });
     }
 
     async navigateToHomePage() {
