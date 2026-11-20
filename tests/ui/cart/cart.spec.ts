@@ -88,4 +88,14 @@ test.describe('Cart', () => {
         await expect(page).toHaveURL(/login/);
         await expect(loginPage.signupHeading).toBeVisible();
     });
+
+    test('empty cart shows the empty message and a link back to products', async ({ cartPage, page }) => {
+        await cartPage.navigateToCartPage();
+
+        await expect(cartPage.emptyCartMessage).toBeVisible();
+        await expect(cartPage.rows).toHaveCount(0);
+
+        await cartPage.emptyCartLink.click();
+        await expect(page).toHaveURL(/products/);
+    });
 });
