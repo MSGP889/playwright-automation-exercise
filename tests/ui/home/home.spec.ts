@@ -24,13 +24,14 @@ test.describe('Home page', () => {
         { name: 'Products', url: /products/, heading: 'All Products' },
         { name: 'Signup / Login', url: /login/, heading: 'Login to your account' },
         { name: 'Contact us', url: /contact_us/, heading: 'Get In Touch' },
+        { name: 'Test Cases', url: /test_cases/, heading: 'Test Cases' },
     ];
 
     for (const { name, url, heading } of navCases) {
-        test(`${name} link navigates to the correct page`, async ({ homePage, page }) => {
+        test.only(`${name} link navigates to the correct page`, async ({ homePage, page }) => {
             await homePage.navLink(name).click();
             await expect(page).toHaveURL(url);
-            await expect(page.getByRole('heading', { name: heading })).toBeVisible();
+            await expect(page.getByRole('heading', { name: heading, exact: true })).toBeVisible();
         });
     }
 
@@ -50,4 +51,13 @@ test.describe('Home page', () => {
 
         await expect(cartPage.rows).toHaveCount(1);
     });
+
+    test('scroll up using the arrow button', async ({ homePage }) => {
+       
+        await homePage.subscriptionHeading.scrollIntoViewIfNeeded();
+        await expect(homePage.subscriptionHeading).toBeInViewport();
+        await homePage.scrollUpButton.click();
+        await expect(homePage.heroTextHeading).toBeInViewport();
+    });
+
 });

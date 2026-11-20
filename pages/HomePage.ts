@@ -14,6 +14,9 @@ export class HomePage {
     readonly contactUsBtn: Locator;
     readonly recommendedHeading: Locator;
     readonly recommendedAddToCartButton: Locator;
+    readonly scrollUpButton: Locator;
+    readonly heroTextHeading: Locator;
+    readonly subscriptionHeading: Locator;
 
     constructor(page: Page) {
         this.page = page;
@@ -27,6 +30,10 @@ export class HomePage {
         this.contactUsBtn = page.getByRole('link', { name: 'Contact us' });
         this.recommendedHeading = page.getByRole('heading', { name: 'recommended items', level: 2 });
         this.recommendedAddToCartButton = this.page.locator('#recommended-item-carousel .item.active .add-to-cart').first();
+        this.scrollUpButton = this.page.locator('#scrollUp');
+        this.heroTextHeading = this.page.locator('#slider-carousel .item.active')
+            .getByRole('heading', { name: 'Full-Fledged practice website for Automation Engineers' });
+        this.subscriptionHeading = page.getByRole('heading', { name: 'Subscription', level: 2 });
     }
 
     async navigateToHomePage() {
