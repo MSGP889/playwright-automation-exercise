@@ -54,4 +54,5 @@ test('user can remove a product from the cart', async ({ productsPage, cartPage,
     await expect(cartPage.rows).toHaveCount(1);
     await cartPage.removeFromCartButton.click();
     await expect(cartPage.rows).toHaveCount(0);
+    await expect(cartPage.emptyCartMessage).toBeVisible();
 });

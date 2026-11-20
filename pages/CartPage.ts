@@ -8,6 +8,7 @@ export class CartPage {
     readonly quantity: Locator;
     readonly total: Locator;
     readonly removeFromCartButton: Locator;
+    readonly emptyCartMessage: Locator;
 
     constructor(page: Page) {
         this.page = page;
@@ -17,6 +18,7 @@ export class CartPage {
         this.quantity = this.rows.first().locator('.cart_quantity button');
         this.total = this.rows.first().locator('.cart_total_price');
         this.removeFromCartButton = page.locator('.cart_quantity_delete');
+        this.emptyCartMessage = page.getByText('Cart is empty!');
     }
 
     nameOf(i: number) { return this.rows.nth(i).locator('.cart_description h4 a'); }
