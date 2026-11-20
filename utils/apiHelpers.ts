@@ -23,7 +23,15 @@ export async function createUserViaApi(request: APIRequestContext, user: UserDat
             mobile_number: user.mobile,
         },
     });
-    const body = await response.json();
+
+    const text = await response.text();
+    
+    let body;
+    try {
+        body = JSON.parse(text);
+    } catch {
+        throw new Error(`createAccount returned non-JSON (HTTP ${response.status()}): ${text.slice(0, 300)}`);
+    }
     expect(body.responseCode, `createAccount failed: ${body.message}`).toBe(201);
 }
 

@@ -15,7 +15,7 @@ export class HomePage {
         this.logo = page.getByRole('img', { name: 'Website for automation practice' });
         this.headerLinks = page.locator(".nav.navbar-nav>li");
         this.signupLoginLink = this.headerLinks.getByRole('link', { name: 'Signup / Login' });
-        this.loggedInAs = page.getByText('Logged in as QA User');
+        this.loggedInAs = page.getByText('Logged in as');
         this.deleteAccountLink = this.headerLinks.getByRole('link', { name: 'Delete Account' });
         this.logoutLink = this.headerLinks.getByRole('link', { name: 'Logout' });
     }
