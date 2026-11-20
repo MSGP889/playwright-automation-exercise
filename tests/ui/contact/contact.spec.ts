@@ -26,4 +26,5 @@ test.describe('Contact Us', () => {
         await contactPage.homeButton.click();
         await expect(page).toHaveURL('/');
     });
+    
 });

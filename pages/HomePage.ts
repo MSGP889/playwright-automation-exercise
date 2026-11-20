@@ -1,5 +1,4 @@
 import { Page, Locator } from '@playwright/test';
-import { FooterComponent } from './components/FooterComponent';
 
 export class HomePage {
 
@@ -10,7 +9,6 @@ export class HomePage {
     readonly loggedInAs: Locator;
     readonly deleteAccountLink: Locator;
     readonly logoutLink: Locator;
-    readonly footer: FooterComponent;
     readonly contactUsBtn: Locator;
     readonly recommendedHeading: Locator;
     readonly recommendedAddToCartButton: Locator;
@@ -26,7 +24,6 @@ export class HomePage {
         this.loggedInAs = page.getByText('Logged in as');
         this.deleteAccountLink = this.headerLinks.getByRole('link', { name: 'Delete Account' });
         this.logoutLink = this.headerLinks.getByRole('link', { name: 'Logout' });
-        this.footer = new FooterComponent(page);
         this.contactUsBtn = page.getByRole('link', { name: 'Contact us' });
         this.recommendedHeading = page.getByRole('heading', { name: 'recommended items', level: 2 });
         this.recommendedAddToCartButton = this.page.locator('#recommended-item-carousel .item.active .add-to-cart').first();

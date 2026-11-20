@@ -1,4 +1,5 @@
 import { test, expect } from '@fixtures/base';
+import { FooterComponent } from '@pages/components/FooterComponent';
 
 test.describe('Cart', () => {
 
@@ -77,7 +78,7 @@ test.describe('Cart', () => {
         await expect(cartPage.totalOf(0)).toHaveText(`Rs. ${unitPrice * 4}`);
     });
 
-    test.only('user directs to login when trying to checkout without being logged in', async ({ productsPage, page, cartPage, loginPage }) => {
+    test('user directs to login when trying to checkout without being logged in', async ({ productsPage, page, cartPage, loginPage }) => {
         await productsPage.productCards.first().hover();
         await productsPage.addToCartButton.first().click();
         await productsPage.viewCartLink.click();
@@ -98,4 +99,5 @@ test.describe('Cart', () => {
         await cartPage.emptyCartLink.click();
         await expect(page).toHaveURL(/products/);
     });
+
 });

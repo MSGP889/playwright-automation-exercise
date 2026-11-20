@@ -1,13 +1,13 @@
 import { Page, Locator } from '@playwright/test';
 
 export class FooterComponent {
-    readonly heading: Locator;
+    readonly subscriptionHeading: Locator;
     readonly emailInput: Locator;
     readonly subscribeButton: Locator;
     readonly successMessage: Locator;
 
     constructor(page: Page) {
-        this.heading = page.locator('footer').getByText('Subscription', { exact: true });
+        this.subscriptionHeading = page.locator('footer').getByText('Subscription', { exact: true });
         this.emailInput = page.locator('#susbscribe_email');
         this.subscribeButton = page.locator('#subscribe');
         this.successMessage = page.getByText('You have been successfully subscribed!');
@@ -17,4 +17,5 @@ export class FooterComponent {
         await this.emailInput.fill(email);
         await this.subscribeButton.click();
     }
+
 }

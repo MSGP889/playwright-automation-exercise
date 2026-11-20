@@ -8,6 +8,7 @@ import { CartPage } from '@pages/CartPage';
 import { CheckoutPage } from '@pages/CheckoutPage';
 import { PaymentPage } from '@pages/PaymentPage';
 import { ContactUS } from '@pages/ContactUS';
+import { FooterComponent } from '@pages/components/FooterComponent';
 
 type MyFixtures = {
     homePage: HomePage;
@@ -19,6 +20,7 @@ type MyFixtures = {
     checkoutPage: CheckoutPage;
     paymentPage: PaymentPage
     contactPage: ContactUS;
+    footer: FooterComponent;
 
 };
 
@@ -65,6 +67,10 @@ export const test = base.extend<MyFixtures>({
 
     contactPage: async ({ page }, use) => {
         await use(new ContactUS(page));
+    },
+
+    footer: async ({ page }, use) => {
+        await use(new FooterComponent(page));
     }
 
 });

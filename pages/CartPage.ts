@@ -1,4 +1,5 @@
 import { Page, Locator } from '@playwright/test';
+import { FooterComponent } from './components/FooterComponent';
 
 export class CartPage {
     readonly page: Page;

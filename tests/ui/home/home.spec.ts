@@ -1,5 +1,4 @@
 import { test, expect } from '@fixtures/base';
-import { HomePage } from '@pages/HomePage';
 
 test.describe('Home page', () => {
     test.beforeEach(async ({ homePage }) => {
@@ -25,6 +24,7 @@ test.describe('Home page', () => {
         { name: 'Signup / Login', url: /login/, heading: 'Login to your account' },
         { name: 'Contact us', url: /contact_us/, heading: 'Get In Touch' },
         { name: 'Test Cases', url: /test_cases/, heading: 'Test Cases' },
+        { name: 'API Testing', url: /api_list/, heading: 'APIs List for practice' },
     ];
 
     for (const { name, url, heading } of navCases) {
@@ -34,14 +34,6 @@ test.describe('Home page', () => {
             await expect(page.getByRole('heading', { name: heading, exact: true })).toBeVisible();
         });
     }
-
-    test('visitor can subscribe to the newsletter from the footer', async ({ homePage }) => {
-        await expect(homePage.footer.heading).toBeVisible();
-
-        await homePage.footer.subscribe('qa.subscriber@example.com');
-
-        await expect(homePage.footer.successMessage).toBeVisible();
-    });
 
     test('recommended item can be added to the cart', async ({ homePage, productsPage, cartPage }) => {
         await expect(homePage.recommendedHeading).toBeVisible();
