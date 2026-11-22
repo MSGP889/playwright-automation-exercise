@@ -1,4 +1,6 @@
 import { test, expect } from '@fixtures/base';
+import { buildUser } from '@utils/userData';
+import { createUserViaApi, deleteUserViaApi } from '@utils/apiHelpers';
 
 test.describe('Products API', () => {
     test('GET /api/productsList returns the products list', async ({ request }) => {
@@ -26,6 +28,69 @@ test.describe('Products API', () => {
         const body = JSON.parse(await response.text());
         expect(body.responseCode).toBe(405);
         expect(body.message).toBe('This request method is not supported.');
+    });
+
+    test('GET all brands list (API)', async ({ request }) => {
+        const response = await request.get('/api/brandsList');
+        expect(response.status()).toBe(200);
+        const body = JSON.parse(await response.text());
+        expect(body.responseCode).toBe(200);
+        expect(Array.isArray(body.brands)).toBe(true);
+        expect(body.brands.length).toBeGreaterThan(0);
+        const firstBrand = await body.brands[0];
+        console.log(firstBrand);
+        expect(firstBrand).toHaveProperty('id');
+        expect(firstBrand).toHaveProperty('brand');
+    })
+
+    test('PUT to the brands list API is not supported (negative test)', async ({ request }) => {
+        const response = await request.put('/api/brandsList');
+        expect(response.status()).toBe(200);
+        const body = JSON.parse(await response.text());
+        expect(body.responseCode).toBe(405);
+        expect(body.message).toBe('This request method is not supported.');
+    });
+
+    test('POST search product returns matching products (API)', async ({ request }) => {
+        const response = await request.post('/api/searchProduct', {
+            form: { search_product: 'top' },
+        });
+        expect(response.status()).toBe(200);
+        const body = JSON.parse(await response.text());
+        //console.log(JSON.stringify(body.products[0], null, 2));
+        expect(body.responseCode).toBe(200);
+        expect(Array.isArray(body.products)).toBe(true);
+        expect(body.products.length).toBeGreaterThan(0);
+        for (const product of body.products) {
+            const text = `${product.name} ${product.category.category}`;
+            expect(text).toMatch(/top/i);
+        }
+    });
+
+    test('Search product without a search term is rejected', async ({ request }) => {
+        const response = await request.post('/api/searchProduct');
+        const body = JSON.parse(await response.text());
+        expect(response.status()).toBe(200);
+        expect(body.responseCode).toBe(400);
+        expect(body.message).toBe('Bad request, search_product parameter is missing in POST request.');
+    });
+
+    test('POST verifyLogin with valid details returns user exists (API)', async ({ request }) => {
+        const user = buildUser();
+        await createUserViaApi(request, user);
+
+        try {
+            const response = await request.post('/api/verifyLogin', {
+                form: { email: user.email, password: user.password },
+            });
+            expect(response.status()).toBe(200);
+
+            const body = JSON.parse(await response.text());
+            expect(body.responseCode).toBe(200);
+            expect(body.message).toBe('User exists!');
+        } finally {
+            await deleteUserViaApi(request, user);
+        }
     });
 
 });
