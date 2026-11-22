@@ -28,7 +28,28 @@ export default defineConfig({
 
   projects: [
     {
+      name: 'setup',
+      testMatch: /.*\.setup\.ts/,
+      teardown: 'cleanup',
+      use: { ...devices['Desktop Chrome'] },
+    },
+    {
       name: 'chromium',
+      testIgnore: /.*\.loggedin\.spec\.ts/,
+      use: { ...devices['Desktop Chrome'] },
+    },
+    {
+      name: 'chromium-logged-in',
+      testMatch: /.*\.loggedin\.spec\.ts/,
+      dependencies: ['setup'],
+      use: {
+        ...devices['Desktop Chrome'],
+        storageState: 'playwright/.auth/user.json',
+      },
+    },
+    {
+      name: 'cleanup',
+      testMatch: /.*\.teardown\.ts/,
       use: { ...devices['Desktop Chrome'] },
     },
   ],

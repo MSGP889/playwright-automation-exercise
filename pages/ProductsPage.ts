@@ -14,6 +14,9 @@ export class ProductsPage {
     readonly searchedHeading: Locator;
     readonly productTitles: Locator;
     readonly categoryPageHeading: Locator;
+    readonly addToCartButton: Locator;
+    readonly viewCartLink: Locator;
+    readonly continueShoppingButton: Locator;
 
     constructor(page: Page) {
         this.page = page;
@@ -29,6 +32,10 @@ export class ProductsPage {
         this.searchedHeading = page.getByRole('heading', { name: 'Searched Products' });
         this.productTitles = page.locator('.productinfo.text-center>p');
         this.categoryPageHeading = page.locator('.features_items > h2.title');
+        this.addToCartButton = this.productCards.getByRole('button', { name: 'Add to cart' });
+        this.addToCartButton = this.productCards.locator('.productinfo .add-to-cart');
+        this.viewCartLink = page.locator('#cartModal').getByRole('link', { name: 'View Cart' });
+        this.continueShoppingButton = page.locator('#cartModal').getByRole('button', { name: 'Continue Shopping' });
     }
 
     async navigateToProductsPage() {
