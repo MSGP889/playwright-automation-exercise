@@ -93,4 +93,22 @@ test.describe('Products API', () => {
         }
     });
 
+    test('POST verifyLogin with a wrong password returns user not found (API)', async ({ request }) => {
+        const user = buildUser();
+        await createUserViaApi(request, user);
+
+        try {
+            const response = await request.post('/api/verifyLogin', {
+                form: { email: user.email, password: 'wrong-password' },
+            });
+            expect(response.status()).toBe(200);
+
+            const body = JSON.parse(await response.text());
+            expect(body.responseCode).toBe(404);
+            expect(body.message).toBe('User not found!');
+        } finally {
+            await deleteUserViaApi(request, user);
+        }
+    });
+
 });
