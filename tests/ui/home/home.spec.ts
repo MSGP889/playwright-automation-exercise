@@ -28,7 +28,7 @@ test.describe('Home page', () => {
     ];
 
     for (const { name, url, heading } of navCases) {
-        test.only(`${name} link navigates to the correct page`, async ({ homePage, page }) => {
+        test(`${name} link navigates to the correct page`, async ({ homePage, page }) => {
             await homePage.navLink(name).click();
             await expect(page).toHaveURL(url);
             await expect(page.getByRole('heading', { name: heading, exact: true })).toBeVisible();
