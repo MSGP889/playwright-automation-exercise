@@ -141,4 +141,21 @@ test.describe('Products API', () => {
         expect(body.message).toBe('Bad request, email or password parameter is missing in POST request.');
     });
 
+    test('DELETE to the verifyLogin API is not supported (negative test)', async ({ request }) => {
+        const response = await request.delete('/api/verifyLogin');
+        expect(response.status()).toBe(200);
+        const body = JSON.parse(await response.text());
+        expect(body.responseCode).toBe(405);
+        expect(body.message).toBe('This request method is not supported.');
+    });
+
+    test("Delete a non-existent account (API, negative test)", async ({ request }) => {
+        const user = buildUser();
+        const response = await request.delete('/api/deleteAccount', {form: { email: user.email, password: user.password }});
+        expect(response.status()).toBe(200);
+        const body = JSON.parse(await response.text());
+        expect(body.responseCode).toBe(404);
+        expect(body.message).toBe('Account not found!');
+    });
+
 });
