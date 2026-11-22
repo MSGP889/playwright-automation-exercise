@@ -7,12 +7,14 @@ export class PaymentPage {
     readonly payButton: Locator;
     readonly orderPlacedHeading: Locator;
     readonly continueButton: Locator;
+    readonly downloadInvoiceLink: Locator;
 
     constructor(page: Page) {
         this.page = page;
         this.payButton = page.locator('[data-qa="pay-button"]');
         this.orderPlacedHeading = page.locator('[data-qa="order-placed"]');
         this.continueButton = page.locator('[data-qa="continue-button"]');
+        this.downloadInvoiceLink = page.getByRole('link', { name: 'Download Invoice' });
     }
 
     async fillPaymentDetails(card: Card) {
