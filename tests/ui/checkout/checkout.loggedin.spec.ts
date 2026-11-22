@@ -39,7 +39,7 @@ test.describe('Checkout (logged in)', () => {
         await paymentPage.continueButton.click();
     });
 
-    test.only('user can download the invoice after placing an order', async ({ checkoutPage, paymentPage, page }) => {
+    test('user can download the invoice after placing an order', async ({ checkoutPage, paymentPage, page }) => {
         await checkoutPage.placeOrderButton.click();
         await expect(page).toHaveURL(/payment/);
         await paymentPage.fillPaymentDetails(dummyCard);
