@@ -18,4 +18,14 @@ test.describe('Products API', () => {
         expect(first).toHaveProperty('price');
         expect(first).toHaveProperty('category');
     });
+
+    test('POST /api/productsList is not supported', async ({ request }) => {
+        const response = await request.post('/api/productsList');
+        expect(response.status()).toBe(200);
+
+        const body = JSON.parse(await response.text());
+        expect(body.responseCode).toBe(405);
+        expect(body.message).toBe('This request method is not supported.');
+    });
+
 });
