@@ -125,6 +125,23 @@ test.describe('Products API', () => {
             expect(body.user.name).toBe(user.name);
         }
 
+        finally {
+            await deleteUserViaApi(request, user);
+        }
+    });
+
+    test('Verify login without a password is rejected (API, negative test)', async ({ request }) => {
+
+        const user = buildUser();
+        await createUserViaApi(request, user);
+        try{
+            const response = await request.post('/api/verifyLogin', { form: { email: user.name } });
+            expect(response.status()).toBe(200);
+            const body = JSON.parse(await response.text());
+            expect(body.responseCode).toBe(400);
+            expect(body.message).toBe('Bad request, email or password parameter is missing in POST request.');
+        }
+
         finally{
             await deleteUserViaApi(request, user);
         }
