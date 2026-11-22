@@ -111,4 +111,23 @@ test.describe('Products API', () => {
         }
     });
 
+    test('Get user details by email (API)', async ({ request }) => {
+
+        const user = buildUser();
+        await createUserViaApi(request, user);
+
+        try {
+            const response = await request.get('/api/getUserDetailByEmail', { params: { email: user.email } });
+            expect(response.status()).toBe(200);
+            const body = JSON.parse(await response.text());
+            expect(body.responseCode).toBe(200);
+            expect(body.user.email).toBe(user.email);
+            expect(body.user.name).toBe(user.name);
+        }
+
+        finally{
+            await deleteUserViaApi(request, user);
+        }
+    });
+
 });
