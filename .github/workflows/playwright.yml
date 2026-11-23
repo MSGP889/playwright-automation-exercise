@@ -41,7 +41,7 @@ jobs:
     needs: smoke
     strategy:
       fail-fast: false
-      max-parallel: 1
+      max-parallel: 2
       matrix:
         project: [chromium, firefox, webkit, chromium-logged-in]
     steps:
