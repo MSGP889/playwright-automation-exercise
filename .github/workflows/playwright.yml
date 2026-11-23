@@ -44,7 +44,7 @@ jobs:
           retention-days: 14
 
   regression:
-    if: github.event_name == 'schedule' || github.event_name == 'workflow_dispatch'
+    if: ${{ always() && (github.event_name == 'schedule' || github.event_name == 'workflow_dispatch') }}
     runs-on: ubuntu-latest
     timeout-minutes: 30
     needs: smoke
@@ -65,7 +65,7 @@ jobs:
         run: npm ci
 
       - name: Install browsers
-        run: npx playwright install --with-deps
+        run: npx playwright install --with-deps chromium webkit
 
       - name: Run regression tests
         run: npx playwright test --grep "@regression" --project=${{ matrix.project }}
