@@ -1,13 +1,13 @@
 import { test, expect } from '@fixtures/base';
 import { ProductsPage } from '@pages/ProductsPage';
 
-test.describe("products Page", () => {
+test.describe("products Page", { tag: '@regression' }, () => {
 
     test.beforeEach(async ({ productsPage }) => {
         await productsPage.navigateToProductsPage();
     });
 
-    test('products page lists all products', async ({ productsPage }) => {
+    test('products page lists all products', { tag: '@smoke' }, async ({ productsPage }) => {
         await expect(productsPage.heading).toBeVisible();
         await expect(productsPage.productCards).toHaveCount(34);
     });

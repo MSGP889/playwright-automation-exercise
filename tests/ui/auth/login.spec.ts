@@ -2,9 +2,9 @@ import { test, expect } from '@fixtures/base';
 import { buildUser } from '@utils/userData';
 import { createUserViaApi, deleteUserViaApi } from '@utils/apiHelpers';
 
-test.describe('Login', () => {
+test.describe('Login', { tag: '@regression' }, () => {
 
-    test('existing user can log in', async ({ homePage, loginPage, page, request }) => {
+    test('existing user can log in', { tag: '@smoke' }, async ({ homePage, loginPage, page, request }) => {
 
         const user = buildUser();
         await createUserViaApi(request, user);

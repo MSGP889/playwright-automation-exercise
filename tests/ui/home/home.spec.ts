@@ -1,6 +1,6 @@
 import { test, expect } from '@fixtures/base';
 
-test.describe('Home page', () => {
+test.describe('Home page', { tag: '@regression' }, () => {
     test.beforeEach(async ({ homePage }) => {
         await homePage.navigateToHomePage();
     });

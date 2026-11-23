@@ -1,7 +1,7 @@
 import { test, expect } from '@fixtures/base';
 import { contactData } from '../../../test-data/contact';
 
-test.describe('Contact Us', () => {
+test.describe('Contact Us', { tag: '@regression' }, () => {
     test('user can submit the contact form with a file attachment', async ({ contactPage, page }) => {
         await contactPage.navigateToContactPage();
         await expect(contactPage.getInTouchHeading).toBeVisible();

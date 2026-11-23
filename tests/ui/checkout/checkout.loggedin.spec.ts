@@ -3,7 +3,7 @@ import { UserData } from '@utils/userData';
 import { dummyCard } from '../../../test-data/payment';
 import fs from 'fs';
 
-test.describe('Checkout (logged in)', () => {
+test.describe('Checkout (logged in)', { tag: '@regression' }, () => {
     let productName: string;
 
     test.beforeEach(async ({ productsPage, cartPage, page }) => {
@@ -18,7 +18,7 @@ test.describe('Checkout (logged in)', () => {
         await expect(page).toHaveURL(/checkout/);
     });
 
-    test('logged-in user can place an order', async ({ checkoutPage, paymentPage, page }) => {
+    test('logged-in user can place an order', { tag: '@smoke' }, async ({ checkoutPage, paymentPage, page }) => {
         const user: UserData = JSON.parse(fs.readFileSync('playwright/.auth/user-data.json', 'utf-8'));
 
         await expect(checkoutPage.deliveryAddress).toContainText(`${user.firstName} ${user.lastName}`);
