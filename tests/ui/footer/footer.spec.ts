@@ -8,7 +8,7 @@ const pages = [
 ];
 
 for (const { name, path } of pages) {
-    test(`footer subscription works on the ${name} page`, async ({ page, footer }) => {
+    test(`footer subscription works on the ${name} page`, { tag: '@regression' }, async ({ page, footer }) => {
         await page.goto(path);
         await expect(footer.subscriptionHeading).toBeVisible();
 

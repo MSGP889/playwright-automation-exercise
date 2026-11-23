@@ -1,13 +1,13 @@
 import { test, expect } from '@fixtures/base';
 import { FooterComponent } from '@pages/components/FooterComponent';
 
-test.describe('Cart', () => {
+test.describe('Cart', { tag: '@regression' }, () => {
 
     test.beforeEach(async ({ productsPage }) => {
         await productsPage.navigateToProductsPage();
     });
 
-    test('user can add a product to the cart', async ({ productsPage, cartPage, page }) => {
+    test('user can add a product to the cart', { tag: '@smoke' }, async ({ productsPage, cartPage, page }) => {
         const productName = (await productsPage.productName.first().textContent())?.trim() ?? '';
         const productPrice = (await productsPage.productPrice.first().textContent())?.trim() ?? '';
 

@@ -2,7 +2,7 @@ import { test, expect } from '@fixtures/base';
 import { buildUser } from '@utils/userData';
 import { createUserViaApi, deleteUserViaApi } from '@utils/apiHelpers';
 
-test.describe('User API', () => {
+test.describe('User API', { tag: '@regression' }, () => {
     
     test('POST verifyLogin with valid details returns user exists (API)', async ({ request }) => {
         const user = buildUser();

@@ -1,7 +1,7 @@
 import { test, expect } from '@fixtures/base';
 import { buildUser } from '@utils/userData';
 
-test.describe('Signup', () => {
+test.describe('Signup', { tag: '@regression' }, () => {
 
     test('new user can register, is logged in, and can delete the account', async ({ homePage, loginPage, signupPage, page }) => {
 

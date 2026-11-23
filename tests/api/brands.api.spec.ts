@@ -1,6 +1,6 @@
 import { test, expect } from '@fixtures/base';
 
-test.describe('Brands API', () => {
+test.describe('Brands API', { tag: '@regression' }, () => {
     test('GET all brands list (API)', async ({ request }) => {
         const response = await request.get('/api/brandsList');
         expect(response.status()).toBe(200);
