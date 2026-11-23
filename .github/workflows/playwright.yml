@@ -13,6 +13,11 @@ jobs:
   smoke:
     runs-on: ubuntu-latest
     timeout-minutes: 15
+    strategy:
+      fail-fast: false
+      max-parallel: 2
+      matrix:
+        project: [chromium, webkit, chromium-logged-in]
     steps:
       - uses: actions/checkout@v4
 
@@ -24,17 +29,17 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
-      - name: Install Chromium
-        run: npx playwright install --with-deps chromium
+      - name: Install browsers
+        run: npx playwright install --with-deps chromium webkit
 
       - name: Run smoke tests
-        run: npx playwright test --grep "@smoke" --project=chromium
+        run: npx playwright test --grep "@smoke" --project=${{ matrix.project }}
 
       - name: Upload report
         if: ${{ !cancelled() }}
         uses: actions/upload-artifact@v4
         with:
-          name: playwright-report
+          name: playwright-report-smoke-${{ matrix.project }}
           path: playwright-report/
           retention-days: 14
 
