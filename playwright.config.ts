@@ -39,6 +39,16 @@ export default defineConfig({
       use: { ...devices['Desktop Chrome'] },
     },
     {
+      name: 'firefox',
+      testIgnore: /.*\.loggedin\.spec\.ts/,
+      use: { ...devices['Desktop Firefox'] },
+    },
+    {
+      name: 'webkit',
+      testIgnore: /.*\.loggedin\.spec\.ts/,
+      use: { ...devices['Desktop Safari'] },
+    },
+    {
       name: 'chromium-logged-in',
       testMatch: /.*\.loggedin\.spec\.ts/,
       dependencies: ['setup'],
