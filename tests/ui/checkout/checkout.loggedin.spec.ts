@@ -19,24 +19,34 @@ test.describe('Checkout (logged in)', { tag: '@regression' }, () => {
     });
 
     test('logged-in user can place an order', { tag: '@smoke' }, async ({ checkoutPage, paymentPage, page }) => {
+        
         const user: UserData = JSON.parse(fs.readFileSync('playwright/.auth/user-data.json', 'utf-8'));
 
-        await expect(checkoutPage.deliveryAddress).toContainText(`${user.firstName} ${user.lastName}`);
-        await expect(checkoutPage.deliveryAddress).toContainText(user.address);
-        await expect(checkoutPage.deliveryAddress).toContainText(user.city);
-        await expect(checkoutPage.deliveryAddress).toContainText(user.country);
-        await expect(checkoutPage.deliveryAddress).toContainText(user.mobile);
-        await expect(checkoutPage.orderReview).toContainText(productName);
+        await test.step('Verify delivery address and order review', async () => {
+            await expect.soft(checkoutPage.deliveryAddress).toContainText(`${user.firstName} ${user.lastName}`);
+            await expect.soft(checkoutPage.deliveryAddress).toContainText(user.address);
+            await expect.soft(checkoutPage.deliveryAddress).toContainText(user.city);
+            await expect.soft(checkoutPage.deliveryAddress).toContainText(user.country);
+            await expect.soft(checkoutPage.deliveryAddress).toContainText(user.mobile);
+            await expect(checkoutPage.orderReview).toContainText(productName);
+        });
 
-        await checkoutPage.commentBox.fill('Please deliver in the morning');
-        await checkoutPage.placeOrderButton.click();
+        await test.step('Place the order with a comment', async () => {
+            await checkoutPage.commentBox.fill('Please deliver in the morning');
+            await checkoutPage.placeOrderButton.click();
+        });
 
-        await expect(page).toHaveURL(/payment/);
-        await paymentPage.fillPaymentDetails(dummyCard);
-        await paymentPage.payButton.click();
+        await test.step('Pay with card', async () => {
+            await expect(page).toHaveURL(/payment/);
+            await paymentPage.fillPaymentDetails(dummyCard);
+            await paymentPage.payButton.click();
+        });
 
-        await expect(paymentPage.orderPlacedHeading).toHaveText('Order Placed!');
-        await paymentPage.continueButton.click();
+        await test.step('Verify the order is placed', async () => {
+            await expect(paymentPage.orderPlacedHeading).toHaveText('Order Placed!');
+            await paymentPage.continueButton.click();
+        });
+
     });
 
     test('user can download the invoice after placing an order', async ({ checkoutPage, paymentPage, page }) => {
