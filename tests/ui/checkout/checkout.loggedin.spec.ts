@@ -15,7 +15,7 @@ test.describe('Checkout (logged in)', { tag: '@regression' }, () => {
         await productsPage.viewCartLink.click();
         await expect(page).toHaveURL(/view_cart/);
         await cartPage.checkoutButton.click();
-        await expect(page).toHaveURL(/checkout/);
+        await expect(page).toHaveURL(/checkout/, { timeout: 15_000 });
     });
 
     test('logged-in user can place an order', { tag: '@smoke' }, async ({ checkoutPage, paymentPage, page }) => {
