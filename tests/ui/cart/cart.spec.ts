@@ -100,4 +100,18 @@ test.describe('Cart', { tag: '@regression' }, () => {
         await expect(page).toHaveURL(/products/);
     });
 
+    test('cart is shared between two tabs of the same browser', async ({ productsPage, context }) => {
+        await productsPage.navigateToProductsPage();
+        const productName = (await productsPage.productName.first().textContent())?.trim() ?? '';
+
+        await productsPage.productCards.first().hover();
+        await productsPage.addToCartButton.first().click();
+        await expect(productsPage.viewCartLink).toBeVisible();
+
+        const secondTab = await context.newPage();
+        await secondTab.goto('/view_cart');
+
+        await expect(secondTab.locator('#cart_info')).toContainText(productName);
+    });
+
 });
