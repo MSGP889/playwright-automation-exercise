@@ -56,4 +56,21 @@ test.describe('Login', { tag: '@regression' }, () => {
             await deleteUserViaApi(request, user);
         }
     });
+
+    test('login form can be submitted using only the keyboard', async ({ homePage, loginPage, page }) => {
+
+        await homePage.navigateToHomePage();
+        await homePage.signupLoginLink.click();
+        await expect(page).toHaveURL(/login/);
+
+        await loginPage.loginEmailInput.fill('test@email.com');
+        await loginPage.loginEmailInput.press('Tab');
+        await expect(loginPage.loginPasswordInput).toBeFocused();
+
+        await page.keyboard.type('Test1234');
+        await page.keyboard.press('Enter');
+
+        await expect(loginPage.errorMessage).toBeVisible();
+    });
+
 });
