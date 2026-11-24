@@ -23,11 +23,11 @@ test.describe('Checkout (logged in)', { tag: '@regression' }, () => {
         const user: UserData = JSON.parse(fs.readFileSync('playwright/.auth/user-data.json', 'utf-8'));
 
         await test.step('Verify delivery address and order review', async () => {
-            await expect(checkoutPage.deliveryAddress).toContainText(`${user.firstName} ${user.lastName}`);
-            await expect(checkoutPage.deliveryAddress).toContainText(user.address);
-            await expect(checkoutPage.deliveryAddress).toContainText(user.city);
-            await expect(checkoutPage.deliveryAddress).toContainText(user.country);
-            await expect(checkoutPage.deliveryAddress).toContainText(user.mobile);
+            await expect.soft(checkoutPage.deliveryAddress).toContainText(`${user.firstName} ${user.lastName}`);
+            await expect.soft(checkoutPage.deliveryAddress).toContainText(user.address);
+            await expect.soft(checkoutPage.deliveryAddress).toContainText(user.city);
+            await expect.soft(checkoutPage.deliveryAddress).toContainText(user.country);
+            await expect.soft(checkoutPage.deliveryAddress).toContainText(user.mobile);
             await expect(checkoutPage.orderReview).toContainText(productName);
         });
 
