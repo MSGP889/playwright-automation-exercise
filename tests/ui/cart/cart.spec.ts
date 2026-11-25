@@ -100,8 +100,11 @@ test.describe('Cart', { tag: '@regression' }, () => {
         await expect(page).toHaveURL(/products/);
     });
 
-    test('cart is shared between two tabs of the same browser', async ({ productsPage, context }) => {
+    test('cart is shared between two tabs of the same browser', async ({ productsPage, context,browserName }) => {
         await productsPage.navigateToProductsPage();
+
+        test.skip(browserName !== 'chromium', 'Browser-independent check, runs on chromium only');
+
         const productName = (await productsPage.productName.first().textContent())?.trim() ?? '';
 
         await productsPage.productCards.first().hover();
