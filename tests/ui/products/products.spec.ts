@@ -85,4 +85,13 @@ test.describe("products Page", { tag: '@regression' }, () => {
         await expect(productDetailsPage.reviewSuccessMessage).toBeVisible();
     });
 
+    test('Search runs when the enter key is pressed', { annotation: { type: 'issue', description: 'known bug: Enter doesnot the submit the product search' }, }, async ({ productsPage, page }) => {
+
+        test.fail();
+        await productsPage.navigateToProductsPage();
+        await productsPage.searchBox.fill("Top");
+        await productsPage.searchBox.press('Enter');
+        await expect(page).toHaveURL(/search=top/);
+    });
+
 });
