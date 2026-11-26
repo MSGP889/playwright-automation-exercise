@@ -52,4 +52,13 @@ test.describe('Products API', { tag: '@regression' }, () => {
         expect(body.message).toBe('Bad request, search_product parameter is missing in POST request.');
     });
 
+    test("GET /api/productsList has the expected header and responds in time", async ({ request }) => {
+        const start = Date.now();
+        const response = await request.get("/api/productsList");
+        const duration = Date.now() - start;
+        expect(response.status()).toBe(200);
+        expect(response.headers()['content-type']).toContain('text/html');
+        expect(duration).toBeLessThan(5000);
+    })
+
 });
