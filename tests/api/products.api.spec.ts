@@ -1,4 +1,5 @@
 import { test, expect } from '@fixtures/base';
+import { productsListSchema } from '@utils/apiSchemas';
 
 test.describe('Products API', { tag: '@regression' }, () => {
     test('GET /api/productsList returns the products list', { tag: '@smoke' }, async ({ request }) => {
@@ -50,6 +51,14 @@ test.describe('Products API', { tag: '@regression' }, () => {
         expect(response.status()).toBe(200);
         expect(body.responseCode).toBe(400);
         expect(body.message).toBe('Bad request, search_product parameter is missing in POST request.');
+    });
+
+    test('GET products list matches the expected schema', { tag: '@regression' }, async ({ request }) => {
+        const response = await request.get('/api/productsList');
+        expect(response.status()).toBe(200);
+
+        const body = JSON.parse(await response.text());
+        expect(() => productsListSchema.parse(body)).not.toThrow();
     });
 
 });
