@@ -4,8 +4,12 @@ import { UserData } from '@utils/userData';
 // Retry when the site answers 503 (heavy load); wait a little longer each time
 async function sendWithRetry(send: () => Promise<APIResponse>, attempts = 3): Promise<APIResponse> {
     for (let i = 1; ; i++) {
-        const response = await send();
-        if (response.status() !== 503 || i === attempts) return response;
+        try {
+            const response = await send();
+            if (response.status() !== 503 || i === attempts) return response;
+        } catch (error) {
+            if (i === attempts) throw error;
+        }
         await new Promise((resolve) => setTimeout(resolve, 3000 * i));
     }
 }
