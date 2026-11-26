@@ -9,6 +9,8 @@ import { CheckoutPage } from '@pages/CheckoutPage';
 import { PaymentPage } from '@pages/PaymentPage';
 import { ContactUS } from '@pages/ContactUS';
 import { FooterComponent } from '@pages/components/FooterComponent';
+import { createUserViaApi, deleteUserViaApi } from '@utils/apiHelpers';
+import { buildUser, UserData } from '@utils/userData';
 
 type MyFixtures = {
     homePage: HomePage;
@@ -21,6 +23,7 @@ type MyFixtures = {
     paymentPage: PaymentPage
     contactPage: ContactUS;
     footer: FooterComponent;
+    apiUser: UserData;
 
 };
 
@@ -71,7 +74,14 @@ export const test = base.extend<MyFixtures>({
 
     footer: async ({ page }, use) => {
         await use(new FooterComponent(page));
-    }
+    },
+
+    apiUser: async ({ request }, use) => {
+        const user = buildUser(); //building userData Values randomly
+        await createUserViaApi(request, user); //Here creating user with user details
+        await use(user);                      // the test runs here (telling to use the user which created in the above step)
+        await deleteUserViaApi(request, user); // cleanup, runs even if the test fails
+    },
 
 });
 
