@@ -47,4 +47,30 @@ test.describe('Signup', { tag: '@regression' }, () => {
             await request.delete('/api/deleteAccount', { form: { email: user.email, password: user.password } });
         }
     });
+
+    test('account created in the UI exists in the backend (UI + API)', async ({ homePage, loginPage, signupPage, request }) => {
+
+        const user = buildUser();
+
+        try {
+            // UI: sign up
+            await homePage.navigateToHomePage();
+            await homePage.signupLoginLink.click();
+            await loginPage.startSignup(user.name, user.email);
+            await signupPage.fillAccountDetails(user);
+            await signupPage.createAccountButton.click();
+            await expect(signupPage.accountCreatedMessage).toBeVisible();
+
+            // API: verify the account exists in the backend
+            const response = await request.get('/api/getUserDetailByEmail', { params: { email: user.email } });
+            const body = JSON.parse(await response.text());
+            expect(body.responseCode).toBe(200);
+            expect(body.user).toMatchObject({ name: user.name, email: user.email });
+        }
+
+        finally {
+            await request.delete('/api/deleteAccount', { form: { email: user.email, password: user.password } });
+        }
+    });
+
 });
