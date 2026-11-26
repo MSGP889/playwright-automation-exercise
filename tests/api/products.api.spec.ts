@@ -1,6 +1,8 @@
 import { test, expect } from '@fixtures/base';
+import { productsListSchema } from '@utils/apiSchemas';
 
 test.describe('Products API', { tag: '@regression' }, () => {
+
     test('GET /api/productsList returns the products list', { tag: '@smoke' }, async ({ request }) => {
         const response = await request.get('/api/productsList');
         expect(response.status()).toBe(200);
@@ -44,6 +46,26 @@ test.describe('Products API', { tag: '@regression' }, () => {
         }
     });
 
+    const searchTerms = ['top', 'tshirt', 'jeans', 'dress'];
+
+    for (const term of searchTerms) {
+        test(`POST search product "${term}" returns matching products`, async ({ request }) => {
+            const response = await request.post('/api/searchProduct', {
+                form: { search_product: term },
+            });
+            expect(response.status()).toBe(200);
+
+            const body = JSON.parse(await response.text());
+            expect(body.responseCode).toBe(200);
+            expect(body.products.length).toBeGreaterThan(0);
+
+            for (const product of body.products) {
+                const text = `${product.name} ${product.category.category}`;
+                expect(text).toMatch(new RegExp(term, 'i'));
+            }
+        });
+    }
+
     test('Search product without a search term is rejected', async ({ request }) => {
         const response = await request.post('/api/searchProduct');
         const body = JSON.parse(await response.text());
@@ -60,5 +82,13 @@ test.describe('Products API', { tag: '@regression' }, () => {
         expect(response.headers()['content-type']).toContain('text/html');
         expect(duration).toBeLessThan(5000);
     })
+
+    test('GET products list matches the expected schema', { tag: '@regression' }, async ({ request }) => {
+        const response = await request.get('/api/productsList');
+        expect(response.status()).toBe(200);
+
+        const body = JSON.parse(await response.text());
+        expect(() => productsListSchema.parse(body)).not.toThrow();
+    });
 
 });
